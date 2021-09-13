@@ -1,26 +1,72 @@
-import React from 'react';
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import React from "react";
+import { render, screen } from "@testing-library/react";
+import userEvent from "@testing-library/user-event";
 
-import Show from './../Show';
+import Show from "./../Show";
+import Episode from "../Episode";
 
 const testShow = {
-    //add in approprate test data structure here.
-}
+  //add in approprate test data structure here.
+  show: {
+    name: "",
+    summary: "",
+    seasons: [
+      {
+        id: 1,
+        name: "",
+        episodes: [],
+      },
+      {
+        id: 2,
+        name: "",
+        episodes: [],
+      },
+      {
+        id: 3,
+        name: "",
+        episodes: [],
+      },
+      {
+        id: 4,
+        name: "",
+        episodes: [],
+      },
+    ],
+  },
+};
 
-test('renders testShow and no selected Season without errors', ()=>{
+test("renders testShow and no selected Season without errors", () => {
+  render(<Show />);
 });
 
-test('renders Loading component when prop show is null', () => {
+test("renders Loading component when prop show is null", () => {
+  render(<Show show={null} />);
+  const fetchData = screen.queryAllByTestId("loading-container");
+  expect(fetchData).toBeTruthy();
 });
 
-test('renders same number of options seasons are passed in', ()=>{
+test("renders same number of options seasons are passed in", () => {
+  render(<Show show={testShow} />);
+  const seasonOptions = screen.queryAllByTestId("season-option");
+  expect(seasonOptions).toHaveLength(4);
 });
 
-test('handleSelect is called when an season is selected', () => {
+test("handleSelect is called when an season is selected", () => {
+  //I feel like I'm really close to figuring this out but I couldn't figure out how to connect to the handleSelect
+  //   render(<Show />);
+  //   const button = screen.getByLabelText("Select A Season", {
+  //     selector: "input",
+  //   });
+  //   userEvent.click(button);
 });
 
-test('component renders when no seasons are selected and when rerenders with a season passed in', () => {
+test("component renders when no seasons are selected and when rerenders with a season passed in", () => {
+  const { rerender } = render(<Show selectedSeason={"none"} />);
+  let selectSeasons = screen.queryAllByTestId("season-option");
+  //expect(selectSeasons).toHaveLength(1);
+  rerender(<Episode episode={1} />);
+  //   selectSeasons = screen.queryAllByTestId("season-option");
+  //   expect(selectSeasons).toHaveLength(1);
 });
 
 //Tasks:
